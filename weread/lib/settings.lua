@@ -10,6 +10,7 @@ Settings.AUTH_SCHEMA_VERSION = 1
 
 local defaults = {
     auth_schema_version = Settings.AUTH_SCHEMA_VERSION,
+    device_fingerprint = "",
     api_key = "",
     cookies = {},
     wr_ticket = "",
@@ -284,6 +285,29 @@ end
 
 function Settings:flush()
     self.store:flush()
+end
+
+function Settings:get_device_fingerprint()
+    local fingerprint = self:get("device_fingerprint", "")
+    if type(fingerprint) == "string" and #fingerprint <= 10
+        and fingerprint:match("^%d+$") and tonumber(fingerprint) <= 4294967295 then
+        return fingerprint
+    end
+
+    -- Match the website's unsigned 32-bit decimal wr_fp format. This identifies
+    -- an installation, not an account, and must survive logout and QR retries.
+    local source = io.open("/dev/urandom", "rb")
+    if not source then error("Could not generate WeRead device fingerprint") end
+    local bytes = source:read(4)
+    source:close()
+    if not bytes or #bytes ~= 4 then
+        error("Could not generate WeRead device fingerprint")
+    end
+    local a, b, c, d = bytes:byte(1, 4)
+    fingerprint = string.format("%.0f", ((a * 256 + b) * 256 + c) * 256 + d)
+    self:set("device_fingerprint", fingerprint)
+    self:flush()
+    return fingerprint
 end
 
 function Settings:update_auth(credentials, options)

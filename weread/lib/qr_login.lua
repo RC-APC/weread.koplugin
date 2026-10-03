@@ -126,7 +126,7 @@ function QRLogin:_request_json(url, opts, stage)
 end
 
 function QRLogin:_begin_protocol()
-    local login_cookies = {}
+    local login_cookies = { wr_fp = self.settings:get_device_fingerprint() }
     local _, page_code, page_headers = self.client:request_follow({
         url = SKILLS_PAGE_URL,
         method = "GET",
@@ -136,6 +136,7 @@ function QRLogin:_begin_protocol()
         headers = {
             ["Accept"] = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
             ["Referer"] = BASE_URL .. "/",
+            ["Cookie"] = Cookie.to_header(login_cookies),
         },
     })
     login_cookies = merge_response_cookies(login_cookies, page_headers)
