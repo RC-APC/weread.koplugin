@@ -48,6 +48,10 @@ weread/ui/thought_popup.lua   Native thought popup entry; rendering in weread/ui
 
 ## Key Conventions
 
+### README Changes
+
+Do not modify `README.md` without explicit user confirmation of the specific change. A direct user request for that README edit counts as confirmation; feature work, menu changes, releases, and general documentation maintenance do not. This rule takes precedence over automatic README synchronization instructions.
+
 ### Module Namespace
 
 - Keep every project-owned Lua module under the `weread/` namespace directory.
@@ -111,7 +115,7 @@ Whenever a menu item is added, removed, renamed, or moved:
 
 - Update the menu definition in `weread/ui/menu.lua` (or the owning feature UI module)
 - Add, rename, or remove the corresponding translation entry in `weread/lib/i18n.lua`; do not leave unused menu translation keys behind
-- Keep the menu tree in `README.md` in sync
+- If the menu tree in `README.md` needs updating, propose the specific change and obtain user confirmation before editing it
 - Search all three files for the old and new labels before considering the change complete
 
 ## Two API Systems
