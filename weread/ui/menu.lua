@@ -73,10 +73,10 @@ function M:onDispatcherRegisterActions()
         title = _("WeRead · Toggle underlines and thoughts"),
         reader = true,
     })
-    Dispatcher:registerAction("weread_continue_annotation_matching", {
+    Dispatcher:registerAction("weread_current_page_thoughts", {
         category = "none",
-        event = "WeReadContinueAnnotationMatching",
-        title = _("WeRead · Continue matching underlines and thoughts"),
+        event = "ShowCurrentPageWeReadThoughts",
+        title = _("WeRead · Thoughts on this page"),
         reader = true,
     })
 end
@@ -177,6 +177,15 @@ function M:getMainMenuItems()
                 keep_menu_open = true,
                 callback = self:safeCallback(_("Book details"), function()
                     self:showCurrentBookDetails()
+                end),
+            }
+            reader_items[#reader_items + 1] = {
+                text = _("Thoughts on this page"),
+                enabled_func = function()
+                    return self.settings:get("cache", {}).show_annotations ~= false
+                end,
+                callback = self:safeCallback(_("Thoughts on this page"), function()
+                    self:showCurrentPageThoughts()
                 end),
             }
         end
