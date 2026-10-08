@@ -73,10 +73,10 @@ function M:onDispatcherRegisterActions()
         title = _("WeRead · Toggle underlines and thoughts"),
         reader = true,
     })
-    Dispatcher:registerAction("weread_current_page_thoughts", {
+    Dispatcher:registerAction("weread_continue_annotation_matching", {
         category = "none",
-        event = "ShowCurrentPageWeReadThoughts",
-        title = _("WeRead · Thoughts on this page"),
+        event = "WeReadContinueAnnotationMatching",
+        title = _("WeRead · Continue matching underlines and thoughts"),
         reader = true,
     })
 end
